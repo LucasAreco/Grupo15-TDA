@@ -1,11 +1,3 @@
-"""
-Suposiciones: el problema comienza siempre desde una posición conocida y con una dirección conocida.
-
-Las posiciones se indican en el formato (fila, columna, direccion)
-
-
-"""
-
 def get_next_pos(maze, position):
     row, col, direc = position
     row_mov, col_mov = 0, 0    
@@ -36,7 +28,7 @@ def turn_left(position):
     elif direc == "S": return (row, col, "E")
     else: return (row, col, "N")
     
-def find_next_step(maze, pos, paths, visited):
+def find_next_step(maze, pos, visited):
     row, col, _ = pos
     if maze[row][col] == "S": return [pos]
     
@@ -45,9 +37,7 @@ def find_next_step(maze, pos, paths, visited):
     sol = None
     next_pos = get_next_pos(maze, pos)
     if next_pos and (next_pos[0], next_pos[1]) not in visited:
-        print(f"Avanzo desde {pos} a {next_pos}")
-        paths[(next_pos[0], next_pos[1])] = (pos[0], pos[1])  
-        sol = find_next_step(maze, next_pos, paths, visited)
+        sol = find_next_step(maze, next_pos, visited)
         if sol:
             return [pos] + sol
 
@@ -58,9 +48,7 @@ def find_next_step(maze, pos, paths, visited):
 
         next_pos = get_next_pos(maze, turn_left_pos)
         if next_pos and (next_pos[0], next_pos[1]) not in visited:
-            print(f"Avanzo desde {pos} a {next_pos}")
-            paths[(next_pos[0], next_pos[1])] = (pos[0], pos[1])  
-            sol = find_next_step(maze, next_pos, paths, visited)
+            sol = find_next_step(maze, next_pos, visited)
             if sol:
                 return [pos] + sol
     
@@ -68,16 +56,6 @@ def find_next_step(maze, pos, paths, visited):
     return sol
 
 def find_path(maze, entry): 
-    paths = {}
     visited = set()
 
-    return find_next_step(maze, entry, paths, visited)
-
-maze = [
-    ['X', 'X', 'X', 'X'], 
-    ['X', 'X', 'O', 'S'], 
-    ['X', 'O', 'O', 'X'], 
-    ['X', 'E', 'X', 'X']
-    ]
-
-print(find_path(maze, (3, 1, "N")))
+    return find_next_step(maze, entry, visited)
