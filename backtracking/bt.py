@@ -44,7 +44,6 @@ def find_next_step(maze, pos, visited):
     turn_left_pos = pos
     for _ in range(3): 
         turn_left_pos = turn_left(turn_left_pos)
-        print(f"Giro a {turn_left_pos}")
 
         next_pos = get_next_pos(maze, turn_left_pos)
         if next_pos and (next_pos[0], next_pos[1]) not in visited:
