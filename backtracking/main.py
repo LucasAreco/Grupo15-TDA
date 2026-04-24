@@ -1,5 +1,6 @@
-from bt import find_path
+from time import time
 
+from bt import find_path
 
 def main(args: list[str]) -> None:
     input_file = args[0] if len(args) > 0 else "data/maze.csv"
@@ -9,13 +10,23 @@ def main(args: list[str]) -> None:
     if not start_pos:
         print("No se encontró la entrada en el laberinto.")
         return
+    
+    t0 = time()
     path = find_path(maze, start_pos)
+    t1 = time()
     print("Laberinto:")
     for row in maze:
         print(" ".join(row))
     
     print(f"Camino encontrado: {path}")
+    print(f"Tiempo de ejecución: {(t1 - t0) * 1000:.4f} milisegundos")
 
+    if not path:
+        print("No se encontró un camino desde la entrada hasta la salida.")
+        return
+    
+    with open("data/results.csv", "a") as file:
+        file.write(f"{len(maze)},{len(maze[0])},{t1 - t0:.4f}\n")
 
 def find_entry(maze):
     for i in range(len(maze)):
