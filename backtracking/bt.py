@@ -1,3 +1,6 @@
+from collections import deque
+
+
 def get_next_pos(maze, position):
     row, col, direc = position
     row_mov, col_mov = 0, 0    
@@ -30,7 +33,10 @@ def turn_left(position):
     
 def find_next_step(maze, pos, visited):
     row, col, _ = pos
-    if maze[row][col] == "S": return [pos]
+    if maze[row][col] == "S":
+        sol =  deque()
+        sol.appendleft(pos)
+        return sol
     
     visited.add((row, col))
 
@@ -39,7 +45,8 @@ def find_next_step(maze, pos, visited):
     if next_pos and (next_pos[0], next_pos[1]) not in visited:
         sol = find_next_step(maze, next_pos, visited)
         if sol:
-            return [pos] + sol
+            sol.appendleft(pos)
+            return sol
 
     turn_left_pos = pos
     for _ in range(3): 
@@ -49,12 +56,16 @@ def find_next_step(maze, pos, visited):
         if next_pos and (next_pos[0], next_pos[1]) not in visited:
             sol = find_next_step(maze, next_pos, visited)
             if sol:
-                return [pos] + sol
+                sol.appendleft(pos)
+                return sol
     
-    visited.remove((row, col))
     return sol
 
 def find_path(maze, entry): 
     visited = set()
-
-    return find_next_step(maze, entry, visited)
+    sol = find_next_step(maze, entry, visited)
+    path = []
+    if sol:
+        for pos in sol:
+            path.append((pos[0], pos[1]))
+    return " -> ".join(str(p) for p in path)
