@@ -2,6 +2,10 @@ from time import time
 
 from bt import find_path
 
+import sys
+
+sys.setrecursionlimit(10**7)
+
 def main(args: list[str]) -> None:
     input_file = args[0] if len(args) > 0 else "data/maze.csv"
     with open(input_file, "r") as file:
@@ -18,15 +22,16 @@ def main(args: list[str]) -> None:
     for row in maze:
         print(" ".join(row))
     
+    elapsed_ms = (t1 - t0) * 1000
     print(f"Camino encontrado: {path}")
-    print(f"Tiempo de ejecución: {(t1 - t0) * 1000:.4f} milisegundos")
+    print(f"Tiempo de ejecución: {elapsed_ms:.4f} milisegundos")
 
     if not path:
         print("No se encontró un camino desde la entrada hasta la salida.")
         return
     
     with open("data/results.csv", "a") as file:
-        file.write(f"{len(maze)},{len(maze[0])},{t1 - t0:.4f}\n")
+        file.write(f"{len(maze)},{len(maze[0])},{elapsed_ms:.4f}\n")
 
 def find_entry(maze):
     for i in range(len(maze)):
