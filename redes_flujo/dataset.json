@@ -1,0 +1,30 @@
+[
+  {
+    "nombre": "caso_con_solucion_simple",
+    "distancias": [[0,1,1,10],[1,0,10,1],[1,10,0,10],[10,1,10,0]],
+    "D": 2,
+    "k": 1,
+    "b": 3
+  },
+  {
+    "nombre": "caso_sin_solucion_k_mayor_b",
+    "distancias": [[0,1,1,1],[1,0,1,1],[1,1,0,1],[1,1,1,0]],
+    "D": 5,
+    "k": 3,
+    "b": 2
+  },
+  {
+    "nombre": "caso_sin_solucion_por_D",
+    "distancias": [[0,1,1,10],[1,0,10,1],[1,10,0,10],[10,1,10,0]],
+    "D": 2,
+    "k": 2,
+    "b": 3
+  },
+  {
+    "nombre": "caso_completo",
+    "distancias": [[0,1,1,10],[1,0,10,1],[1,10,0,10],[10,1,10,0]],
+    "D": 11,
+    "k": 2,
+    "b": 3
+  }
+]
