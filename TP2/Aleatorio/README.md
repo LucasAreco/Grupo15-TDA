@@ -52,5 +52,5 @@ Ejemplo (`dataset_k4.csv`):
 Desde la carpeta del proyecto, ubicarse en el mismo directorio donde se encuentra la carpeta `datasets/` y ejecutar:
 
 ```bash
-python3 coloreo.py
+python3 aleatorio.py
 ```
