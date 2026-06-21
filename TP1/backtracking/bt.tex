@@ -1,0 +1,215 @@
+
+\section{Problema 3 – Backtracking}
+
+\subsection{Problema a resolver}
+Este problema plantea un laberinto donde sólo se puede avanzar hacia adelante o girar 90° a la izquierda. El objetivo es encontrar un camino desde un casillero que contenga la letra "E", representando la entrada o posición inicial, hasta un casillero que contenga la letra "S", representando la salida o posición final. 
+
+\subsection{Supuestos}
+\begin{itemize}
+    \item El algoritmo asume que el laberinto es representado como una matriz de n filas con m columnas.
+    \item El algoritmo asume que en toda la matriz existirá un único casillero con la letra ``E''.
+    \item El algoritmo asume que en toda la matriz existirá un único casillero con la letra "S".
+\end{itemize}
+
+\subsection{Diseño}
+Para encontrar la solución a este algoritmo se utilizó la técnica de Backtracking que implica explorar todas las soluciones posibles, podando aquellas que son incompatibles con los requisitos del problema.
+En este caso en particular, desde cualquier casillero $(i, j)$ orientado en una dirección $D$, los posibles caminos son:
+\begin{itemize}
+    \item avanzar 1 casillero en la dirección $D$
+    \item girar $90^\circ$ hacia la izquierda
+\end{itemize}
+Las soluciones incompatibles que se pueden podar son:
+\begin{itemize}
+    \item casilleros con una letra ``X'', que representa una pared.
+    \item casilleros ya visitados, para evitar recursiones infinitas.
+\end{itemize}
+
+\subsubsection{Pseudocódigo}
+\begin{verbatim}
+    resolver_laberinto(laberinto):
+        recorremos todo el laberinto para encontrar la posicion de la entrada
+        establecemos la direccion inicial de la entrada como norte por defecto
+        resolver_laberinto_rec(laberinto, entrada, ())
+
+    resolver_laberinto_rec(laberinto, posicion, visitados):
+        si la posicion actual es la salida no hace falta seguir explorando:
+            creamos una cola para reconstruir el camino
+            agregamos la posicion actual a la cola
+            devolvemos la cola como solucion al laberinto
+
+        agregamos la posicion actual a los casilleros visitados para evitar recorrer casilleros repetidos
+
+        si podemos avanzar desde la posicion actual
+            si el casillero siguiente no fue visitados
+                definimos la solucion parcial como el resultado de resolver_laberinto_rec(laberinto, casillero_siguiente, visitados)
+                si encontramos una solucion parcial agregamos la posicion actual a dicha solucion y la devolvemos
+
+        si no encontramos salida o no podiamos avanzar en la direccion actual
+            por cada direccion posible en el casillero actual
+                giramos la aspiradora
+                    si podemos avanzar desde la posicion actual
+                        si el casillero siguiente no fue visitados
+                            definimos la solucion parcial como el resultado de resolver_laberinto_rec(laberinto, casillero_siguiente, visitados)
+                            si encontramos una solucion parcial agregamos la posicion actual a dicha solucion y la devolvemos
+
+        si llegamos a este punto significa que no hay solucion desde la posicion actual
+        
+\end{verbatim}
+
+\subsubsection{Estructuras de datos utilizadas}
+Las estructuras de datos utilizadas en la resolución de este problema son:
+\begin{itemize}
+    \item \textbf{Laberinto:} lista de listas
+    \begin{itemize}
+        \item Complejidad temporal:
+        \begin{itemize}
+            \item Acceder a una posición: $O(1)$
+        \end{itemize}
+    \end{itemize}
+
+    \item \textbf{Visitados:} Set
+    \begin{itemize}
+        \item Complejidad temporal:
+        \begin{itemize}
+            \item Agregar elementos: $O(1)$
+            \item Verificar si un elemento pertenece: $O(1)$
+        \end{itemize}
+    \end{itemize}
+
+    \item \textbf{Solucion:} Deque (cola con dos extremos)
+    \begin{itemize}
+        \item Complejidad temporal:
+        \begin{itemize}
+            \item Agregar elementos a la derecha: $O(1)$
+            \item Quitar elementos de la derecha: $O(1)$
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
+
+\subsection{Análisis de Complejidad}
+En la sección anterior se mencionan las estructuras utilizadas y la complejidad temporal de sus operaciones clave para el algoritmo. 
+Las operaciones de comparación, asignación y construcción de tuplas de coordenadas se consideran constantes para el calculo de la complejidad temporal.
+
+En cada invocación a la función recursiva se intenta explorar 4 caminos posibles para determinada posición:
+\begin{itemize}
+    \item El casillero siguiente
+    \item El mismo casillero con un giro de 90°
+    \item El mismo casillero con un giro de 180°
+    \item El mismo casillero con un giro de 270°
+\end{itemize}
+
+Sin embargo, gracias a la reestricción de no visitar casilleros ya visitados, nunca exploraremos caminos que lleven a una solución inválida. De esta forma tendremos a lo sumo $n * m$ llamados recursivos en el peor de los casos y la complejidad temporal del algoritmo será $O(n*m)$. En un caso promedio, gran parte de esos casilleros serán paredes y tampoco se exploran por lo tanto la complejidad temporal real puede ser mucho menor.
+
+Otras operaciones realizadas fuera del algoritmo en sí pero que forman parte de la preparación de los datos incluyen:
+\begin{itemize}
+    \item recorrer el laberinto para encontrar la entrada: $O(n*m)$, en el caso de que la entrada esté ubicada en el último casillero.
+    \item recorrer la solución para darle un formato específico: $O(n*m)$, en el caso de que todos los casilleros formen parte del camino.
+\end{itemize}
+    Ninguna empeora la complejidad general del algoritmo ya que se ejecuta una vez cada operación.
+    
+
+\subsection{Seguimiento}
+\begin{verbatim}
+    laberinto :
+    X X X X
+    E 0 0 X
+    X 0 0 X
+    X X S X
+
+    entrada: (1, 0, N)
+    resolver_laberinto(laberinto, entrada, set())
+
+    1. pos = (1, 0, N)
+    ¿es la salida? NO
+    visitados = {(1, 0)}
+    ¿Podemos avanzar? NO
+    giramos -> (1, 0, W)
+    ¿Podemos avanzar? NO
+    giramos -> (1, 0, S)
+    ¿Podemos avanzar? NO
+    giramos -> (1, 0, E)
+    ¿Podemos avanzar? SI 
+        prox_pos = (1, 1, E)
+        ¿Ya visitamos el próximo casillero? NO
+            sol = resolver_laberinto(laberinto, prox_pos, visitados)
+                2. pos = (1, 1, E)
+                    ¿es la salida? NO
+                    visitados = {(1, 0), (1, 1)}
+                    ¿Podemos avanzar? SI 
+                        prox_pos = (1, 2, E)
+                        ¿Ya visitamos el proximo casillero? NO
+                        sol = resolver_laberinto(laberinto, prox_pos, visitados)
+                            3. pos = (1, 2, E)
+                                ¿es la salida? NO
+                                visitados = {(1, 0), (1, 1), (1, 2)}
+                                ¿Podemos avanzar? NO
+                                giramos -> (1, 2, N)
+                                ¿Podemos avanzar? NO
+                                giramos -> (1, 2, W)
+                                ¿Podemos avanzar? SI
+                                    prox_pos = (1, 1, W)
+                                    ¿Ya visitamos el proximo casillero? SI
+                                giramos -> (1, 2, S)
+                                ¿Podemos avanzar? SI
+                                    prox_pos = (2, 2, S)
+                                    ¿Ya visitamos el proximo casillero? NO
+                                        sol = resolver_laberinto(laberinto, prox_pos, visitados)
+                                            4. pos = (2, 2, S)
+                                            ¿es la salida? NO
+                                            visitados = {(1, 0), (1, 1), (1, 2), (2, 2)}
+                                            ¿Podemos avanzar? SI
+                                                prox_pos = (3, 2, S)
+                                                ¿Ya visitamos el proximo casillero? NO
+                                                    sol = resolver_laberinto(laberinto, prox_pos, visitados)
+                                                        5. pos = (3, 2, S)
+                                                        ¿es la salida? SI
+                                                        sol = cola((3,2))
+                                                        -> sol
+                                                    ¿Hubo solución por este camino? Sí
+                                                        sol.add((2, 2)) # sol = ((2, 2), (3,2))
+                                        ¿Hubo solucion por este camino? Sí
+                                            sol.add((1, 2)) # sol = ((1, 2), (2, 2), (3,2))
+                        ¿Hubo solucion por este camino? Sí
+                            sol.add((1, 1)) # sol = ((1, 1), (1, 2), (2, 2), (3,2))
+            ¿Hubo solucion por este camino? Sí
+                sol.add((1, 0)) # sol = ((1, 0), (1, 1), (1, 2), (2, 2), (3,2))
+    ¿Hubo solución? SI : (1, 0) -> (1, 1) -> (1, 2) -> (2, 2) -> (3,2)
+\end{verbatim}
+
+\subsection{Pruebas ejecutadas}
+\subsubsection{Sets de datos}
+Inicialmente se generaron sets de datos con paredes y celdas libres asignadas al azar para probar el funcionamiento del algoritmo, sin embargo a la hora de evaluar los resultados notamos que la varianza del laberinto no permitía evaluar correctamente la relación entre el tamaño del laberinto y el tiempo de ejecución. Esto es porque si un laberinto se generó de forma que la salida y la entrada queden "cerca", puede tardar apenas milisegundos en encontrar la salida. Sin embargo, si un laberinto tiene mayor cantidad de paredes se deben explorar mayor cantidad de caminos antes de encontrar la salida. 
+
+Este fue el gráfico obtenido con los laberintos generados aleatoriamente:
+
+\begin{figure}[backtracking_complexity_avg_grouped.png] 
+    \centering
+    \includegraphics[width=0.5\textwidth]{resultados_bt_avg_case} 
+    \caption{Gráfico Tamaño del laberinto vs Tiempo de ejecución para laberintos generados aleatoriamente}
+    \label{fig:mi_imagen}
+\end{figure}
+
+Para forzar los peores casos y poder comparar con la complejidad teórica se generaron laberintos que solo tengan un camino posible y este camino implique recorrer todo el laberinto. La forma más fácil de generar estos laberintos es en forma de serpiente como en el siguiente ejemplo:
+
+\begin{verbatim}
+    X X X X X X X X
+    X E 0 0 0 0 0 X
+    X X X X X X 0 X
+    X 0 0 0 0 0 0 X
+    X 0 X X X X X X
+    X 0 0 0 0 0 S X
+    X X X X X X X X
+\end{verbatim}
+
+\subsubsection{Resultados obtenidos}
+
+Con el set de datos generado en base a los peores casos, se comprueba que la complejidad empírica se corresponde casi perfectamente con la complejidad teórica calculada inicialmente. En el siguiente gráfico se pueden comparar ambas curvas:
+
+\begin{figure}[backtracking_complexity.png] 
+    \centering
+    \includegraphics[width=0.5\textwidth]{resultados_bt_worst_case} 
+    \caption{Gráfico Tamaño del laberinto vs Tiempo de ejecución}
+    \label{fig:mi_imagen}
+\end{figure}
+
+De esta forma confirmamos que la complejidad temporal del algoritmo está acotada superiormente en $O(n*m)$.
