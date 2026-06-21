@@ -1,5 +1,5 @@
 dataset,n,m,c,cota,promedio,cumple
-dataset_bipartito_k33.csv,6,9,9,6.0,5.992,NO
-dataset_k4.csv,4,6,5,3.333,4.01,SI
-dataset_k5.csv,5,10,8,5.333,6.657,SI
-dataset_random10.csv,10,17,17,11.333,11.33,NO
+dataset_bipartito_k33.csv,6,9,9,6.0,6.008,SI
+dataset_k4.csv,4,6,5,3.333,3.999,SI
+dataset_k5.csv,5,10,8,5.333,6.679,SI
+dataset_random10.csv,10,17,17,11.333,11.339,SI
