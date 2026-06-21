@@ -1,0 +1,8 @@
+Solución al problema TP2 - Problema 1
+Seleccionados:
+- A: beneficio $50000 / paradas 30
+- B80: beneficio $100000 / paradas 80
+- C: beneficio $100000 / paradas 75
+- E: beneficio $5000 / paradas 2
+Total beneficio: $255000
+Total paradas usadas: 187 / 200
